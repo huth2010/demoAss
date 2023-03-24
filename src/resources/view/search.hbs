@@ -1,0 +1,18 @@
+<div class="mt-4">
+    {{!-- mac dinh cua form khi nhan submit la lay tat ca value trong cac truong input va day len url --}}
+    {{!-- de can thiep phuong thuc post hay get thif sua method trong from --}}
+    {{!-- can thiep duong dan thi sua action --}}
+    <form method="POST" action="">
+  <div class="mb-3">
+    <label for="search-input" class="form-label">Nhap tu khoa</label>
+    <input type="text"  name="q" class="form-control" id="search-input" placeholder="Nhap tu khoa">
+    <label for="search-input" class="form-label">Nhap tu gioi tinh</label>
+    <select name="gender" id="gender-input" class="form-control">
+        <option value="">--chon gioi tinh--</option>
+        <option value="male">nam</option>
+        <option value="female">nu</option>
+    </select>
+  </div>
+  <button type="submit" class="btn btn-primary">Tim kiem</button>
+</form>
+</div>
