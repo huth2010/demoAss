@@ -1,15 +1,15 @@
 <form class="mt-4" name="container-form" method="post" action="/courses/handle-form-actions">
   <div>
     <h3>Sản phẩm của tôi</h3>
-    {{#if deletedCount}}
-    <a href="/me/trash/courses">Thùng rác({{deletedCount}})</a>
-    {{/if}}
   </div>
   <div class="mt-4 d-flex align-item-center">
-    <div class="mb-3 form-check">
+    {{!-- <div class="mb-3 form-check">
       <input type="checkbox" class="form-check-input" id="checkbox-all">
       <label class="form-check-label" for="exampleCheck1">Chọn tất cả</label>
-    </div>
+    </div> --}}
+     {{#if deletedCount}}
+    <a href="/me/trash/courses" class="btn"><i data-feather="trash-2"></i>({{deletedCount}})</a>
+    {{/if}}
     <select id="" class="form-select form-control-sm " style="width: 205px; margin: 0 15px;" name="action" required>
       <option value="">-- Chọn hành động --</option>
       <option value="delete">Xóa</option>
@@ -21,8 +21,8 @@
   <table class="table mt-4">
     <thead>
       <tr>
-        <th scope="col"></th>
-        <th scope="col">#</th>
+        <th scope="col"><input type="checkbox" class="form-check-input" id="checkbox-all"></th>
+        <th scope="col">STT</th>
         <th scope="col">Tên sản phẩm
           {{{sortable 'name' _sort}}}
         </th>

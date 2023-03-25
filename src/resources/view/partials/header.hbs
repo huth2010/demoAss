@@ -15,8 +15,10 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="/courses/create">Đăng sản phẩm</a>
+                        {{#if user}}                 
                         <a class="dropdown-item" href="/me/stored/courses">Sản phẩm của tôi</a>
-                        <a class="dropdown-item" href="/authtification/login">Đăng nhập</a>
+                        {{/if}}
+                        <a class="dropdown-item" href="/authtification/show">Đăng nhập</a>
                     </div>
                 </li>
             </ul>

@@ -12,17 +12,10 @@ const router = express.Router();
 const User = require('../app/models/User');
 
 // GET login page
-router.get('/login', authContoller.login);
+router.get('/show', authContoller.show);
 
 // POST login form
 router.post('/login', authContoller.login);
 
-// GET dashboard page
-// router.get('/dashboard', (req, res) => {
-//   if (!req.session.userId) {
-//     return res.redirect('/login');
-//   }
-//   res.render('dashboard');
-// });
 
 module.exports = router;
