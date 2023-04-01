@@ -4,24 +4,24 @@ class MeContoller {
   // GET /me/stored/courses
   storedCourses(req, res, next) {
    
-    //let courseQuery=
-    Course.find({}).then((courses)=>res.send(courses));
+    let courseQuery=Course.find({})
+    //Course.find({}).then((courses)=>res.send(courses));
 
 
-    // if(req.query.hasOwnProperty('_sort')){
-    //   courseQuery=courseQuery.sort({
-    //     [req.query.column]: req.query.type
-    //   })
+    if(req.query.hasOwnProperty('_sort')){
+      courseQuery=courseQuery.sort({
+        [req.query.column]: req.query.type
+      })
       
-    // }
+    }
 
-    // Promise.all([courseQuery, Course.countDocumentsDeleted()])
-    //   .then(([courses, deletedCount]) => res.render('me/storedCourses', {
-    //     deletedCount,
-    //     courses: mutipleMongoosetoObject(courses)
-    //   }))
-    //   .catch(next)
-    //res.send(courseQuery);
+    Promise.all([courseQuery, Course.countDocumentsDeleted()])
+      .then(([courses, deletedCount]) => res.render('me/storedCourses', {
+        deletedCount,
+        courses: mutipleMongoosetoObject(courses)
+      }))
+      .catch(next)
+    
 
   }
 
