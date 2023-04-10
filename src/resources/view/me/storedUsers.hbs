@@ -1,0 +1,75 @@
+
+<div class="mt-4">
+  <h3>Danh sách tài khoản</h3>
+</div>
+<div class="d-flex align-items-center">
+  <table class="table mt-4">
+    <thead>
+      <tr>
+        <th scope="col">STT</th>
+        <th scope="col">Ảnh</th>
+        <th scope="col">Tên</th>
+        <th scope="col">Email</th>
+        <th scope="col">Thời gian tạo tài khoản</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each users}}
+      <tr>
+        <td scope="row">{{sum @index 1}}</td>
+        <td><img src="{{this.img}}" alt="" style="height: 60px;width: 60px; object-fit: cover;"></td>
+        <td>{{this.name}}</td>
+        <td>{{this.email}}</td>
+        <td>{{this.createdAt}}</td>
+        <td><a href="/authtification/{{this._id}}/edit" class="btn btn-link">Sửa</a></td>
+        <td>
+          <!-- Button trigger modal -->
+          <a href="" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#delete-user-modal" data-id="{{this._id}}">Xóa</a>
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal for delete confirmation -->
+<div class="modal" tabindex="-1" id="delete-user-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Xóa người dùng?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Bạn có chắc chắn muốn xóa người dùng không?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="btn-delete-user" class="btn btn-danger">Xóa bỏ</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Hidden form for delete action -->
+<form name="delete-user-form" method="post"></form>
+
+<script>
+  var deleteForm = document.forms['delete-user-form'];
+  const exampleModal = document.getElementById('delete-user-modal');
+  exampleModal.addEventListener('show.bs.modal', event => {
+    // Button that triggered the modal
+    const button = event.relatedTarget;
+    // Extract info from data-bs-* attributes
+    const userId = button.getAttribute('data-id');
+    var btnDeleteUser = document.getElementById('btn-delete-user');
+    btnDeleteUser.onclick = function () {
+      //alert(userId);
+      deleteForm.action = '/authtification/' + userId + '?_method=DELETE';
+      deleteForm.submit();
+    };
+  });
+</script>

@@ -1,16 +1,32 @@
 const {engine}= require('express-handlebars');
 const express = require('express')
-const morgan=require('morgan')
 const SortMiddleware=require('./app/middleware/SortMiddleware')
 const methodOverride=require('method-override')
 var path=require('path')
-const app = express()//instan
-const port = 8000
+const app = express()
+const port = 3000
 const route=require('./routes')
 const db=require('./config/db/index')
+const session = require('express-session');
+const compression = require('compression');
+const passport = require('passport');
+const jwt = require('jsonwebtoken');
+const checkTokenMiddleware=require('./app/middleware/checkTokenMiddleware')
+
 //connect db
 db.connect();
 
+//
+app.use(session({
+  secret: 'nodeauthsecret', // Khóa bí mật để mã hóa session
+  resave: false, // Không lưu lại session nếu không có thay đổi
+  saveUninitialized: false, // Không lưu lại session chưa được khởi tạo
+  // ...các tùy chọn khác...
+}));
+
+
+// Sử dụng middleware compression để nén dữ liệu gửi đi
+app.use(compression());
 app.use(methodOverride('_method'));
 //custom middleware
 app.use(SortMiddleware);
@@ -20,12 +36,36 @@ app.use(express.json());
 
 //XMLHttpRequest, fech,axios ....
 app.use(express.static(path.join(__dirname,'public')));
-//http loger
-//app.use(morgan('combined'))
+
+// Thiết lập middleware của Passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Middleware để lấy thông tin user từ session
+app.use((req, res, next) => {
+  // Kiểm tra xem người dùng đã đăng nhập hay chưa
+  if (req.session && req.session.token) {
+    try {
+      // Giải mã token để lấy thông tin user
+      const decoded = jwt.verify(req.session.token, 'nodeauthsecret');
+      //req.user = decoded; // Lưu thông tin user vào req.user
+      res.locals.user=decoded
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  next();
+});
+
+// Middleware
+
+
 // Template engine
 app.engine('hbs', engine({
   extname: '.hbs',
   helpers:{
+    user:()=> res.locals.user,
+    isAllow: () => res.locals.isAllow,
     sum: (a,b)=>a+b,
     sortable: (field,sort)=>{
       const sortType=field===sort.column?sort.type:'default';
@@ -47,15 +87,12 @@ app.engine('hbs', engine({
     }
   }
 }));
+app.use(checkTokenMiddleware);
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname,'resources','view'));
 
-
-
 route(app);
 
-
-// 127.0.0.1 - localhost
 app.listen(port, () => {
   console.log(`App listening on port ${port}`)
 });

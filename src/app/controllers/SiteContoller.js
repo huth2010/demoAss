@@ -6,10 +6,12 @@ class SiteController {
     Course.find({}).then(courses => 
      { 
       res.render('home',{
-        courses: mutipleMongoosetoObject(courses)
+        courses: mutipleMongoosetoObject(courses), 
+        iisAllow:false
       });
     })
     .catch(error => next(error));
+ 
   }
 
   // GET /search

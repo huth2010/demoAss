@@ -1,5 +1,9 @@
 const Course = require('../models/Course');
 const {mongoosetoObject}=require('../../util/mongoose');
+const Jimp=require('jimp');
+const multer = require('multer');
+const { use } = require('../../routes/news');
+//const upload=multer({dest:'uploads/'})
 class CourseContoller {
   // GET /courses/:slug
   show(req, res,next) {
@@ -22,15 +26,45 @@ class CourseContoller {
     
   }
    //// POST /store/
-   store(req,res,next){
-    //res.json(req.body);
-    //const formData={...req.body};
-    const course=new Course(req.body);
-    course.save().then(()=>res.redirect(`/me/stored/courses`)).catch(next)
+  
+   async store(req,res,next){
+    //code chay dc
+    //const course=new Course(req.body);
+    //course.save().then(()=>res.redirect(`/me/stored/courses`)).catch(next)
+    //demo
+    const {name,desc,price}=req.body
+    if(req.file !==null){
+      const imgPath=req.file.path
+      const img=await Jimp.read(imgPath)
+      const base64img=await img.getBase64Async(Jimp.MIME_PNG)
+      Course.create({
+        name:name,
+        desc:desc,
+        img:base64img,
+        price:price
+      }).then(()=>res.redirect(`/me/stored/courses`)).catch(next)
+      
+    }
+
     
   }
-  update(req,res,next){
-    Course.updateOne({ _id: req.params.id},req.body).then(()=>res.redirect('/me/stored/courses')).catch(next);
+  async update(req,res,next){
+    const {name,desc,price}=req.body
+    const product=await Course.findById(req.params.id)
+    //update info user
+    product.name=name
+    product.desc=desc
+    product.price=price
+    if(req.hasOwnProperty('file') && req.file !==null){
+      const imgPath=req.file.path
+      const img=await Jimp.read(imgPath)
+      const base64img=await img.getBase64Async(Jimp.MIME_PNG)
+      product.img=base64img
+    }
+    //cap nhat lai du lieu
+    await product.save().then(()=>res.redirect('/me/stored/courses')).catch(next)
+    //code chay dc cu
+    //Course.updateOne({ _id: req.params.id},req.body).then(()=>res.redirect('/me/stored/courses')).catch(next);
   }
 
   destroy(req,res,next){

@@ -1,23 +1,41 @@
 <div class="mt-4">
     <h3>Sửa sản phẩm</h3>
-    <form method="post" action="/courses/{{course._id}}/?_method=PUT">
+    <form method="post" action="/courses/{{course._id}}/?_method=PUT" enctype="multipart/form-data">
   <div class="mb-3">
     <label for="name" >Tên sản phẩm</label>
     <input type="text" class="form-control" value="{{course.name}}" id="name" name="name" >
   </div>
   <div class="mb-3">
     <label for="price" >Giá sản phẩm</label>
-    <input type="text" class="form-control" id="price"name="price" value="{{course.price}}">
+    <input type="number" min="0" class="form-control" id="price"name="price" value="{{course.price}}">
   </div>
   <div class="mb-3">
     <label for="desc" >Mô tả sản phẩm</label>
     <textarea class="form-control" cols="20" rows="5" id="desc"name="desc" >{{course.desc}}</textarea>
   </div>
-  <div class="mb-3">
-    <label for="img" >Hình ảnh</label>
-    <input type="text" class="form-control" id="img" name="img" value="{{course.img}}" >
-  </div>
+   <div class="mb-3">
+  <label for="img">Hình ảnh</label>
+  <img src="{{course.img}}" class="form-control" alt="" id="img-preview" style="height: 100px; width: 100px">
+  <input type="file" class="form-control mt-3" id="img" name="img" accept="img/*">
+</div>
 
   <button type="submit" class="btn btn-primary">Cập nhật sản phẩm</button>
 </form>
 </div>
+<script>
+  const imgInput = document.getElementById('img');
+  const imgPreview = document.getElementById('img-preview');
+  
+  imgInput.addEventListener('change', () => {
+    const file = imgInput.files[0];
+    const reader = new FileReader();
+  
+    reader.addEventListener("load", function () {
+      imgPreview.src = reader.result;
+    }, false);
+  
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  });
+</script>

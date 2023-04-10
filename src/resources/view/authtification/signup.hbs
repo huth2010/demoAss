@@ -1,0 +1,50 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-5">
+            <h1 class="text-center mt-4">Đăng Ký</h1>
+            <form action="/authtification/signup" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="exampleFormControlInput0">Mời nhập tên</label>
+                    <input type="text" class="form-control" id="exampleFormControlInput0" placeholder="Mời nhập tên" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="img">Hình ảnh</label>
+                    <img src="" alt="" id="img-preview" class="form-control mb-2" style="height: 100px; width: 100px;">
+                    <input type="file" class="form-control-file" id="img" name="img" accept="img/*" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleFormControlInput1">Mời nhập gmail</label>
+                    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Mời nhập gmail" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="inputPassword5">Mật khẩu</label>
+                    <input type="password" id="inputPassword5" class="form-control" aria-labelledby="passwordHelpBlock" placeholder="Mời nhập mật khẩu" name="password" required>
+                    <div id="passwordHelpBlock" class="form-text">
+                        Nhập độ dài mật khẩu từ 8 - 20 kí tự
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success mt-4 text-center">Đăng ký</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    const imgInput = document.getElementById('img');
+    const imgPreview = document.getElementById('img-preview');
+
+    imgInput.addEventListener('change', () => {
+        const file = imgInput.files[0];
+        const reader = new FileReader();
+
+        reader.addEventListener("load", function () {
+            imgPreview.src = reader.result;
+        }, false);
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    });
+</script>

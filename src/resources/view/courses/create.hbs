@@ -1,23 +1,42 @@
 <div class="mt-4">
     <h3>Đăng sản phẩm</h3>
-    <form method="post" action="/courses/store">
-  <div class="mb-3">
-    <label for="name" >Tên sản phẩm</label>
-    <input type="text" class="form-control" id="name"name="name" >
-  </div>
-  <div class="mb-3">
-    <label for="price" >Giá sản phẩm</label>
-    <input type="text" class="form-control" id="price"name="price" >
-  </div>
-  <div class="mb-3">
-    <label for="desc" >Mô tả sản phẩm</label>
-    <input type="text" class="form-control" id="desc"name="desc" >
-  </div>
-  <div class="mb-3">
-    <label for="img" >Hình ảnh</label>
-    <input type="text" class="form-control" id="img" name="img" >
-  </div>
+    <form method="post" action="/courses/store" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="name">Tên sản phẩm</label>
+            <input type="text" class="form-control" id="name" name="name">
+        </div>
+        <div class="mb-3">
+            <label for="price">Giá sản phẩm</label>
+            <input type="number" class="form-control" id="price" name="price" min="0">
+        </div>
+        <div class="mb-3">
+            <label for="desc">Mô tả sản phẩm</label>
+            <input type="text" class="form-control" id="desc" name="desc">
+        </div>
+        <div class="mb-3">
+            <label for="img">Hình ảnh</label>
+            <img src="" alt="" class="form-control" id="img-preview" style="height: 100px; width: 100px">
+            <input type="file" class="form-control mt-3" id="img" name="img" accept="img/*" required>
+        </div>
 
-  <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
-</form>
+        <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
+    </form>
 </div>
+
+<script>
+    const imgInput = document.getElementById('img');
+    const imgPreview = document.getElementById('img-preview');
+
+    imgInput.addEventListener('change', () => {
+        const file = imgInput.files[0];
+        const reader = new FileReader();
+
+        reader.addEventListener("load", function () {
+            imgPreview.src = reader.result;
+        }, false);
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
