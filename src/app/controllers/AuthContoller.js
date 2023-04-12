@@ -15,7 +15,10 @@ class AuthContoller {
   async login(req, res, next) {
     let user = await User.findOne({ email: req.body.email });
     if (!user) {
-      res.status(401).send({ success: false, msg: 'Authentication failed. User not found.' });
+      res.render('authtification/login',{
+        errEmail:"Không tìm thấy email người dùng"
+      })
+      //res.status(401).send({ success: false, msg: 'Authentication failed. User not found.' });
     } else {
       user.comparePassword(req.body.password, function (err, isMatch) {
         if (isMatch && !err) {
@@ -25,12 +28,16 @@ class AuthContoller {
           // Gửi thông tin người dùng vào res.locals để có thể truy cập từ file .hbs
           res.locals.user = {
             name: user.name,
+            role:user.role,
             img: user.img
           };
 
           res.redirect(`/`);
         } else {
-          res.status(401).send({ success: false, msg: 'Authentication failed. Wrong password.' });
+          res.render('authtification/login',{
+            errPass:"Mật khẩu chưa chính xác!"
+          })
+          //res.status(401).send({ success: false, msg: 'Authentication failed. Wrong password.' });
         }
       });
     }

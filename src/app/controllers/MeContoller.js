@@ -37,12 +37,20 @@ class MeController {
       }))
       .catch(next)
   }
+  //api
+  apiStoredCourses(req, res, next) {
+    Course.find({}).then(courses=>res.json(courses)) 
+  }
 
   // GET /me/trash/courses
   trashCourses(req, res, next) {
     Course.findDeleted({}).then(courses => res.render('me/trashCourses', {
       courses: mutipleMongoosetoObject(courses)
     })).catch(next)
+  }
+  //api
+  apiUsers(req, res, next) {
+    User.find({}).then(users=>res.json(users)) 
   }
 }
 

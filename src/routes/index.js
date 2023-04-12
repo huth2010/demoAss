@@ -5,6 +5,7 @@ const siteRouter = require('./site');
 const authRouter =require('./auth')
 const multer  = require('multer');
 const upload = multer({ dest: 'uploads/' });
+const apiRouter=require('./api')
 
 function route(app) { 
   // app.use(function(req, res, next) {
@@ -12,6 +13,7 @@ function route(app) {
   //   res.locals.currentUser = currentUser;
   //   next();
   // });
+  app.use('/api',apiRouter)
   app.use('/me',meRouter)
   app.use('/courses',courseRouter)
   app.use('/news', newsRouter);

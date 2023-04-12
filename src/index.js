@@ -12,6 +12,7 @@ const compression = require('compression');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const checkTokenMiddleware=require('./app/middleware/checkTokenMiddleware')
+const checkAdminRole=require('./app/middleware/checkAdminRole')
 
 //connect db
 db.connect();
@@ -64,6 +65,11 @@ app.use((req, res, next) => {
 app.engine('hbs', engine({
   extname: '.hbs',
   helpers:{
+     eq : (a, b) => {
+       a === b;
+    },
+    
+    //role:()=>res.locals.role,
     user:()=> res.locals.user,
     isAllow: () => res.locals.isAllow,
     sum: (a,b)=>a+b,
@@ -82,11 +88,13 @@ app.engine('hbs', engine({
 
       const icon=icons[sortType];
       const type=types[sortType];
+      
       return `<a href="?_sort&column=${field}&type=${type}">
       <i data-feather="${icon}" width="16"></i></a>`
     }
   }
 }));
+//app.use(checkAdminRole)
 app.use(checkTokenMiddleware);
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname,'resources','view'));

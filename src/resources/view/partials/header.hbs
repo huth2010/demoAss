@@ -17,10 +17,12 @@
                         {{user.name}}
                     </a>
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                      {{#if user.role}}
                         <a class="dropdown-item" href="/courses/create">Đăng sản phẩm</a>
                         <a class="dropdown-item" href="/me/stored/courses">Sản phẩm của tôi</a>
                         <a class="dropdown-item" href="/me/users">Danh sách người dùng</a>
                         <a class="dropdown-item" href="/authtification/show2">Thêm người dùng</a>
+                        {{/if}}
                         <a class="dropdown-item" href="/authtification/logout">Đăng xuất</a>
                     </div>
                 </li>
