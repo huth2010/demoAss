@@ -38,7 +38,7 @@ class MeController {
       .catch(next)
   }
   //api
-  apiStoredCourses(req, res, next) {
+    apiStoredCourses(req, res, next) {
     Course.find({}).then(courses=>res.json(courses)) 
   }
 
